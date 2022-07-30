@@ -19,7 +19,8 @@ function ProductAddToCart({ product }) {
     <Flex p={50} w="full" alignItems="center" justifyContent="center">
       <Box
         bg={useColorModeValue("white", "gray.800")}
-        maxW="sm"
+        w="500px"
+        h="650px"
         borderWidth="1px"
         rounded="lg"
         shadow="lg"
@@ -38,6 +39,7 @@ function ProductAddToCart({ product }) {
         <Image
           src={`https://bootcamp.akbolat.net/${product.image?.url}`}
           alt={`Picture of ${product.name}`}
+          style={{ height:'450px', objectFit:'cover', width:'275px' }}
           roundedTop="lg"
         />
 

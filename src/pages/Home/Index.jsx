@@ -13,7 +13,7 @@ const Index = () => {
         fontSize={'4xl'}
         mt={10}
         fontWeight={'bold'}>Popular Products</chakra.h1>
-      <Products />
+      <Products sidebar={false} />
     </Container>
   );
 };

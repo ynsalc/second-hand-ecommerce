@@ -24,7 +24,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/products" element={<Products />} />
+          <Route path="/products" element={<Products sidebar={true}/>} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/sign-up" element={<Register />} />
           <Route path="/sign-in" element={<Login />} />
