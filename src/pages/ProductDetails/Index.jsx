@@ -16,23 +16,62 @@ import {
   ListItem,
   SkeletonText,
 } from "@chakra-ui/react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { MdLocalShipping } from "react-icons/md";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import OfferModal from "./OfferModal";
+import BuyModal from "./BuyModal";
 
 export default function ProductDetail() {
+  const navigate = useNavigate();
+  const state = useSelector((state) => state.user);
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState({});
+  const [offers, setOffers] = useState([]);
+  const [buyModalOpen, setBuyModalOpen] = useState(false);
+  const [offerModalOpen, setOfferModalOpen] = useState(false);
 
   useEffect(() => {
     setLoading(true);
     axios.get(`https://bootcamp.akbolat.net/products/${id}`).then((res) => {
       setLoading(false);
       setProduct(res.data);
+      setOffers(res.data.offers);
     });
   }, [id]);
+
+  let givenOffer;
+
+  offers.map((item) => {
+    if (
+      item.users_permissions_user === Number(state ? state?.user?.id : null)
+    ) {
+      givenOffer = item;
+    } else {
+      return null;
+    }
+  });
+
+  const btnColorMode = useColorModeValue("white", "gray.900");
+
+  const handleBuyClick = () => {
+    if (state) {
+      setBuyModalOpen(true);
+    } else {
+      navigate("/sign-in");
+    }
+  };
+
+  const handleOfferClick = () => {
+    if (state) {
+      setOfferModalOpen(true);
+    } else {
+      navigate("/sign-in");
+    }
+  };
 
   return (
     <Container maxW={"7xl"}>
@@ -140,19 +179,56 @@ export default function ProductDetail() {
           <Button
             rounded={"none"}
             w={"full"}
-            mt={8}
+            disabled={product.isSold}
+            mt={2}
             size={"lg"}
+            onClick={handleBuyClick}
             py={"7"}
             colorScheme="twitter"
-            color={useColorModeValue("white", "gray.900")}
+            color={btnColorMode}
             textTransform={"uppercase"}
             _hover={{
               transform: "translateY(2px)",
               boxShadow: "lg",
             }}
           >
-            Sepete Ekle
+            {product.isSold ? "Bu ürün satışta değil" : "Sepete Ekle"}
           </Button>
+
+          <BuyModal
+            modal={buyModalOpen}
+            setModal={() => setBuyModalOpen(!buyModalOpen)}
+            productId={product.id}
+          />
+
+          {product.isOfferable && !givenOffer && !product.isSold && (
+            <>
+              <Button
+                rounded={"none"}
+                w={"full"}
+                disabled={product.isSold}
+                mt={2}
+                size={"lg"}
+                onClick={handleOfferClick}
+                py={"7"}
+                colorScheme="twitter"
+                color={btnColorMode}
+                textTransform={"uppercase"}
+                _hover={{
+                  transform: "translateY(2px)",
+                  boxShadow: "lg",
+                }}
+              >
+                Teklif Ver
+              </Button>
+
+              <OfferModal
+                modal={offerModalOpen}
+                setModal={() => setOfferModalOpen(!offerModalOpen)}
+                productId={product.id}
+              />
+            </>
+          )}
 
           <Stack direction="row" alignItems="center" justifyContent={"center"}>
             <MdLocalShipping />

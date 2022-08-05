@@ -4,7 +4,8 @@ import { toastSuccess, toastError } from "../constants/Toastify";
 const baseUrl = "https://bootcamp.akbolat.net/";
 const endPoints = {
   login: "auth/local",
-  register: "auth/local/register"
+  register: "auth/local/register",
+  product: "products"
 }
 
 const REGISTER_API_URL = `${baseUrl}${endPoints.register}`;
@@ -46,10 +47,15 @@ const logout = () => {
   toastSuccess("You have successfully logged out!");
 };
 
+export const fetchOneProduct = async (productId) => {
+  const data = await axios.get(`${baseUrl}/${endPoints.product}/${productId}`);
+  return data;
+};
+
 const authService = {
   register,
   logout,
-  login,
+  login
 };
 
 export default authService;

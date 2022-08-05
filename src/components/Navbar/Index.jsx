@@ -48,9 +48,9 @@ export default function Nav() {
   };
 
   const Links = [
-    { id: 1, name: "Homepage", to: "/" },
-    { id: 2, name: "Products", to: "/products" },
-    { id: 3, name: "Basket", to: "/basket" },
+    { id: 1, name: "Anasayfa", to: "/" },
+    { id: 2, name: "Ürünler", to: "/products" },
+    { id: 3, name: "Sepet", to: "/basket" },
   ];
   const { colorMode, toggleColorMode } = useColorMode();
   return (
